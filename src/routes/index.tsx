@@ -1,24 +1,40 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight, Header, Mail, MessageCircle, ProductDashboard, ProjectPreview, SectionHeading } from "@/components/portfolio";
+import { contactLinks, processSteps, projects, services } from "@/data/portfolio";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({ meta: [
+    { title: "Алекс Нейро — AI-продукты и MVP" },
+    { name: "description", content: "Создание AI-продуктов, MVP, лендингов и автоматизаций через вайбкодинг — от идеи до запуска." },
+    { property: "og:title", content: "Алекс Нейро — AI-продукты и MVP" },
+    { property: "og:description", content: "Создание AI-продуктов, MVP и автоматизаций от идеи до запуска." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ]}),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const stats = [["30+", "Проектов"], ["12+", "Довольных клиентов"], ["95%", "Сданы в срок"], ["4.9/5", "Средняя оценка"]];
+const benefits = [["Быстрее", "От идеи до прототипа — дни, а не месяцы."], ["Гибче", "Продукт можно менять прямо в процессе работы."], ["Экономнее", "Меньше ресурсов уходит на проверку гипотез."]];
+
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <div id="top" className="page-glow min-h-screen bg-background text-foreground"><Header/><main>
+    <section className="mx-auto grid min-h-[850px] max-w-7xl items-center gap-16 px-5 pb-24 pt-32 md:min-h-[900px] lg:grid-cols-[.92fr_1.08fr] lg:px-8 lg:pb-32 lg:pt-36">
+      <div className="reveal relative z-10"><div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface-glass px-4 py-2 text-xs font-bold text-muted-foreground backdrop-blur-xl"><span className="size-2 rounded-full bg-success shadow-[0_0_12px_var(--success)]"/>ВАЙБКОДИНГ × AI × ПРОДУКТЫ</div><h1 className="max-w-3xl text-[42px] font-extrabold leading-[1.08] md:text-6xl lg:text-[68px]">Создаю AI-продукты <span className="text-brand-gradient">через вайбкодинг</span></h1><p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">Быстро собираю MVP, лендинги, веб-приложения и автоматизации с помощью AI и современных инструментов. От идеи до работающего продукта — без лишней бюрократии.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Button asChild variant="hero" size="hero" className="w-full sm:w-auto"><a href="#projects">Посмотреть проекты <ArrowUpRight/></a></Button><Button asChild variant="glass" size="hero" className="w-full sm:w-auto"><a href="#contact">Связаться</a></Button></div></div>
+      <div className="relative pb-8 lg:translate-x-5"><div className="absolute inset-8 bg-brand-gradient opacity-20 blur-3xl"/><ProductDashboard/></div>
+    </section>
+
+    <section aria-label="Показатели" className="mx-auto max-w-7xl px-5 lg:px-8"><div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-border-strong bg-surface-glass shadow-soft backdrop-blur-xl md:grid-cols-4">{stats.map(([value,label],i)=><div key={label} className={`p-6 text-center md:p-8 ${i%2===0?"border-r border-border":""} ${i<2?"border-b border-border md:border-b-0":""} ${i===1?"md:border-r":""} ${i===2?"md:border-r":""}`}><strong className="text-2xl font-extrabold md:text-3xl">{value}</strong><p className="mt-1 text-sm text-muted-foreground">{label}</p></div>)}</div></section>
+
+    <section id="projects" className="mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:py-32 lg:px-8"><SectionHeading eyebrow="Избранное" title="Избранные проекты">От идеи до работающего продукта — несколько примеров того, что можно создать с помощью AI и вайбкодинга.</SectionHeading><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{projects.map(project=><article key={project.name} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-border-strong hover:shadow-glow"><div className="overflow-hidden transition-transform duration-300 group-hover:scale-[1.025]"><ProjectPreview type={project.type}/></div><div className="p-6"><h3 className="text-xl font-bold">{project.name}</h3><p className="mt-3 min-h-24 text-base leading-6 text-muted-foreground">{project.description}</p><div className="mt-5 flex flex-wrap gap-2">{project.tags.map(tag=><span key={tag} className="rounded-full border border-border bg-secondary px-2.5 py-1 text-xs text-muted-foreground">{tag}</span>)}</div></div></article>)}</div></section>
+
+    <section id="services" className="scroll-mt-24 border-y border-border bg-surface/55"><div className="mx-auto max-w-7xl px-5 py-24 md:py-32 lg:px-8"><SectionHeading eyebrow="Экспертиза" title="Что я делаю">Помогаю превратить идею в работающий цифровой продукт быстрее классической разработки.</SectionHeading><div className="grid gap-5 md:grid-cols-2">{services.map((service,i)=><article key={service.title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-border-strong md:p-8"><div className="mb-8 flex items-center justify-between"><span className="grid size-13 place-items-center rounded-xl border border-border bg-secondary text-2xl">{service.icon}</span><span className="text-sm font-bold text-primary">{String(i+1).padStart(2,"0")}</span></div><h3 className="text-xl font-bold md:text-2xl">{service.title}</h3><p className="mt-4 text-base leading-7 text-muted-foreground">{service.description}</p><p className="mt-6 border-l-2 border-primary pl-4 text-sm font-semibold leading-6 text-foreground">Результат: {service.result}</p></article>)}</div></div></section>
+
+    <section id="process" className="mx-auto max-w-7xl scroll-mt-24 px-5 py-24 md:py-32 lg:px-8"><SectionHeading eyebrow="Процесс" title="Как я работаю">От идеи до запуска — короткими итерациями, с постоянной проверкой результата.</SectionHeading><div className="relative grid gap-0 md:grid-cols-4 md:gap-6"><div className="absolute bottom-8 left-5 top-6 w-px bg-brand-gradient md:left-0 md:right-0 md:top-7 md:h-px md:w-auto"/>{processSteps.map((step,i)=><article key={step.title} className="relative grid grid-cols-[48px_1fr] gap-5 pb-10 md:block md:pb-0"><span className="relative z-10 grid size-12 place-items-center rounded-full border border-border-strong bg-surface text-sm font-extrabold text-primary shadow-glow md:mb-7">{String(i+1).padStart(2,"0")}</span><div><h3 className="text-lg font-bold md:text-xl">{step.title}</h3><p className="mt-3 text-base leading-7 text-muted-foreground">{step.text}</p></div></article>)}</div></section>
+
+    <section id="about" className="scroll-mt-24 border-y border-border bg-surface/55"><div className="mx-auto grid max-w-7xl gap-12 px-5 py-24 md:py-28 lg:grid-cols-[1fr_1.15fr] lg:px-8"><SectionHeading eyebrow="Подход" title="Почему вайбкодинг работает">AI не заменяет понимание продукта. Он позволяет быстрее перейти от идеи к работающей версии, проверить гипотезу и инвестировать время только в то, что действительно нужно пользователям.</SectionHeading><div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">{benefits.map(([title,text],i)=><article key={title} className="flex gap-5 rounded-xl border border-border bg-card p-5"><span className="text-sm font-extrabold text-primary">0{i+1}</span><div><h3 className="font-bold">{title}</h3><p className="mt-1 text-sm leading-6 text-muted-foreground">{text}</p></div></article>)}</div></div></section>
+
+    <section id="contact" className="scroll-mt-24 px-5 py-24 md:py-32 lg:px-8"><div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-border-strong bg-surface-glass px-6 py-16 text-center shadow-glow-strong md:px-14 md:py-24"><div className="absolute inset-x-[15%] top-0 h-40 bg-brand-gradient opacity-25 blur-3xl"/><div className="relative"><p className="mb-4 text-sm font-semibold text-primary">ГОТОВЫ НАЧАТЬ?</p><h2 className="mx-auto max-w-3xl text-3xl font-extrabold md:text-5xl">Есть идея? Давайте превратим её в продукт.</h2><p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg">Расскажите, что хотите создать. Я помогу определить MVP и подобрать самый быстрый путь к запуску.</p><div className="mx-auto mt-8 flex max-w-xl flex-col justify-center gap-3 sm:flex-row"><Button asChild variant="hero" size="hero" className="w-full"><a href={contactLinks.telegram} target="_blank" rel="noreferrer"><MessageCircle/>Написать в Telegram</a></Button><Button asChild variant="glass" size="hero" className="w-full"><a href={contactLinks.email}><Mail/>Написать на Email</a></Button></div></div></div></section>
+  </main><footer className="border-t border-border"><div className="mx-auto max-w-7xl px-5 py-10 lg:px-8"><div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between"><div><strong>Алекс Нейро</strong><p className="text-sm text-muted-foreground">Vibe Coding Specialist</p></div><nav className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">{[["Проекты","#projects"],["Услуги","#services"],["Процесс","#process"],["Telegram",contactLinks.telegram],["Email",contactLinks.email]].map(([label,href])=><a key={label} href={href} className="min-h-11 content-center transition-colors hover:text-foreground">{label}</a>)}</nav></div><p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground">© 2026 Алекс Нейро. Все права защищены.</p></div></footer></div>;
 }

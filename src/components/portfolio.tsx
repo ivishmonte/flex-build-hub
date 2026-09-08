@@ -1,6 +1,7 @@
 import { ArrowUpRight, BarChart3, Bot, Check, Code2, Mail, Menu, MessageCircle, Sparkles, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 const nav = [["Проекты", "#projects"], ["Услуги", "#services"], ["Процесс", "#process"], ["Обо мне", "#about"]] as const;
 
